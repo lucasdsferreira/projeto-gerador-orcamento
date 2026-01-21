@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Orçamento Automático</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Gerador de Orçamento</h1>
+
+        <label>
+            Nome do Cliente
+            <input type="text" id="clientName" placeholder="Ex: João da Silva">
+        </label>
+
+        <label>
+            Nome do Projeto
+            <input type="text" id="projectName" placeholder="Ex: Gerenciador de Estoque">
+        </label>
+
+        <label>
+            Requisições do Cliente
+            <textarea id="requirements" rows="10" placeholder="Descreva o que o cliente pediu" ></textarea>
+        </label>
+
+        <label>
+            Tipo de serviço
+            <select id="service">
+                <option value="300" data-days="5">Landing Page</option>
+                <option value="500" data-days="10">Site Institucional</option>
+                <option value="800" data-days="15">Blog</option>
+                <option value="1000" data-days="20">E-commerce</option>
+                <option value="1300" data-days="25">Sistema Web</option>
+            </select>
+        </label>
+
+        <label>
+            Quantidade de páginas
+            <input type="number" id="pages" min="1" value="1">
+        </label>
+
+        <label>
+            Prazo Desejado (em dias)
+            <input type="text" id="customDeadline" min="1" placeholder="Ex: 20 dias">
+        </label>
+
+        <fieldset>
+            <legend>Adicionais</legend>
+
+            <label>
+                <input type="checkbox" id="seo">
+                SEO Básico (+R$150)
+            </label>
+
+            <label>
+                <input type="checkbox" id="whatsapp">
+                Integração WhatsApp (+R$50)
+            </label>
+
+            <label>
+                <input type="checkbox" id="hosting">
+                Hospedagem (+R$100)
+            </label>
+
+            <label>
+                <input type="checkbox" id="maintenance">
+                Manutenção Mensal (+R$120)
+            </label>
+            
+            <label>
+                <input type="checkbox" id="urgent">
+                Prazo Urgente (+20%)
+            </label>
+
+        </fieldset>
+
+        <div class="total">
+            Total: R$ <span id="total">0</span>
+        </div>
+
+        <div class="summary" id="summary"></div>
+        <div class="deadline" id="deadline"></div>
+
+        <button type="button" id="calculate">Calcular orçamento</button>
+        <button type="button" id="copy">Copiar orçamento</button>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
