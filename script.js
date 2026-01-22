@@ -21,6 +21,9 @@ const calculateBtn = document.getElementById('calculate');
 const copyBtn = document.getElementById('copy');
 const generateBtn = document.getElementById('generate');
 
+const budgetList = document.getElementById('budgetList');
+const orderBy = document.getElementById('orderBy');
+
 // Função para pegar orçamentos salvos
 function obterOrcamentos() {
   const dados = localStorage.getItem('orcamentos');
@@ -90,6 +93,15 @@ function calculateTotal() {
 function criarOrcamento() {
   const id = Date.now().toString();
 
+  const hoje = new Date();
+
+  const diasPrazo = customDeadline.value
+    ? parseInt(customDeadline.value, 10)
+    : 0;
+
+  const dataEntrega = new Date(hoje);
+  dataEntrega.setDate(hoje.getDate() + diasPrazo);
+
   const adicionais = [];
   if (seo.checked) adicionais.push("SEO Básico");
   if (whatsapp.checked) adicionais.push("Integração WhatsApp");
@@ -104,16 +116,51 @@ function criarOrcamento() {
     servico: service.options[service.selectedIndex].text,
     paginas: parseInt(pages.value, 10) || 1,
     adicionais: adicionais,
-    prazo: customDeadline.value
-      ? parseInt(customDeadline.value, 10)
-      : null,
+    prazo: diasPrazo,
     total: parseFloat(totalElement.textContent) || 0,
-    data: new Date().toISOString()
+    dataCriacao: hoje.toISOString(),
+    dataEntrega: dataEntrega.toISOString()
   };
 
   console.log("Orçamento gerado:", orcamento);
 
   return orcamento;
+}
+
+function listarOrcamentos() {
+  let lista = obterOrcamentos();
+
+  // Ordernação
+  const criterio = orderBy.value;
+
+  if (criterio === 'date') {
+    lista.sort((a, b) => new Date(b.data) - new Date(a.data));
+  }
+
+  if (criterio === 'client') {
+    lista.sort((a, b) => a.cliente.localeCompare(b.cliente));
+  }
+
+  if (criterio === 'service') {
+    lista.sort((a, b) => a.servico.localeCompare(b.servico));
+  }
+
+  // Limpa a lista
+  budgetList.innerHTML = '';
+
+  // Renderiza cada orçamento
+  lista.forEach((orcamento) => {
+    const div = document.createElement('div');
+    div.classList.add('budget-item');
+
+    div.innerHTML = `<strong>${orcamento.cliente}</strong><br>
+    Projeto: ${orcamento.projeto}<br>
+    Serviço: ${orcamento.servico}<br>
+    Total: R$ ${orcamento.total}<br>
+    Entrega: ${new Date(orcamento.dataEntrega).toLocaleDateString()}`;
+
+    budgetList.appendChild(div);
+  });
 }
 
 // Evento do botão calcular
@@ -136,5 +183,10 @@ copyBtn.addEventListener('click', () => {
 generateBtn.addEventListener('click', () => {
   const novoOrcamento = criarOrcamento();
   salvarNovoOrcamento(novoOrcamento);
+  listarOrcamentos();
   alert("Orçamento gerado com sucesso!");
 });
+
+orderBy.addEventListener('change', listarOrcamentos);
+
+listarOrcamentos();

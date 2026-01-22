@@ -86,6 +86,21 @@
         <button type="button" id="calculate">Calcular orçamento</button>
         <button type="button" id="generate">Gerar orçamento</button>
         <button type="button" id="copy">Copiar orçamento</button>
+
+        <hr>
+
+        <h2>Orçamentos salvos</h2>
+
+        <label>
+            Ordenar por:
+            <select id="orderBy">
+                <option value="date">Data (mais recente)</option>
+                <option value="client">Cliente (A-Z)</option>
+                <option value="service">Serviço</option>
+            </select>
+        </label>
+
+        <div id="budgetList"></div>
     </main>
 
     <script src="script.js"></script>
